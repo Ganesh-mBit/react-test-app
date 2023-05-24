@@ -1,61 +1,8 @@
 import React, { useState, type ChangeEvent, type FormEvent } from 'react';
-import { makeStyles } from '@mui/styles';
 import { TextField, Button, Typography, Box, IconButton } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import TwitterIcon from '@mui/icons-material/Twitter';
-
-const useStyles = makeStyles(() => ({
-  loginForm: {
-    width: 400,
-    margin: '0 auto',
-    padding: 40,
-    borderRadius: 8,
-    boxSizing: 'border-box'
-  },
-  topSection: {
-    textAlign: 'center',
-    marginBottom: 20
-  },
-  logo: {
-    width: 100,
-    height: 100
-  },
-  formTitle: {
-    fontSize: 20,
-    marginBottom: 10
-  },
-  formFieldContainer: {
-    height: 90,
-    marginBottom: 10
-  },
-  formField: {
-    marginBottom: 20
-  },
-  errorMessage: {
-    color: '#ff4d4f',
-    fontSize: 12,
-    marginTop: 5
-  },
-  socialLoginContainer: {
-    marginTop: 20,
-    textAlign: 'center'
-  },
-  socialLoginButtons: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: 10,
-    marginTop: 10
-  },
-  forgotPassword: {
-    textAlign: 'center',
-    marginTop: 20
-  },
-  createAccount: {
-    textAlign: 'center',
-    marginTop: 20
-  }
-}));
 
 interface Field {
   name: string
@@ -95,7 +42,7 @@ const Login: React.FC<LoginProps> = ({
   onSubmit,
   customForm
 }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -137,17 +84,28 @@ const Login: React.FC<LoginProps> = ({
 
   console.log(error, Object.keys(errors), !Object.keys(errors).length);
   return (
-    <div className={classes.loginForm}>
-      <div className={classes.topSection}>
+    <Box sx={{
+      width: 1000,
+      margin: '0 auto',
+      padding: '0 320px',
+      borderRadius: 8,
+      boxSizing: 'border-box'
+    }}>
+      <Box sx={{ textAlign: 'center' }}>
         {
-          logoUrl ? <img src={logoUrl} alt="Logo" className={classes.logo} /> : null
+          logoUrl ? <img src={logoUrl} alt="Logo" width={100} height={100} /> : null
         }
-        <Typography variant="h6" className={classes.formTitle}>
+        <Typography variant="h6" sx={{ fontSize: 20, marginBottom: 5 }}>
           {title}
         </Typography>
-      </div>
+      </Box>
       {error && !Object.keys(errors).length && (
-      <Typography color="error" className={classes.errorMessage}>
+      <Typography color="error" sx={{
+        color: '#ff4d4f',
+        fontSize: 12,
+        marginTop: 5
+      }}
+        >
         {error}
       </Typography>
       )}
@@ -175,9 +133,9 @@ const Login: React.FC<LoginProps> = ({
         </Button>
       </form>
       {showSocialLogin && (
-        <div className={classes.socialLoginContainer}>
+        <Box sx={{ marginTop: 4, textAlign: 'center' }}>
           <Typography variant="body1">Or login with:</Typography>
-          <div className={classes.socialLoginButtons}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: 2 }}>
             {socialProviders.map((provider, index) => (
               <IconButton style={{ marginLeft: index > 0 ? 10 : 0 }} key={provider} onClick={() => { onSocialLogin(provider); }}>
               <Box
@@ -195,26 +153,26 @@ const Login: React.FC<LoginProps> = ({
               </Box>
             </IconButton>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       )}
       {showForgotPassword && (
-        <div className={classes.forgotPassword}>
+        <Box sx={{ textAlign: 'center', marginTop: 2 }}>
           <Button color="primary" onClick={onForgotPassword}>
             Forgot Password?
           </Button>
-        </div>
+        </Box>
       )}
 
       {showCreateAccount && (
-        <div className={classes.createAccount}>
+        <Box sx={{ textAlign: 'center', marginTop: 2 }}>
           <Typography variant="body1">Don&apos;t have an account?</Typography>
           <Button color="primary" onClick={onCreateAccount}>
             Create an Account
           </Button>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
