@@ -1,0 +1,31 @@
+.calendar-container {
+  height: 600px;
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-container {
+    height: 300px;
+  }
+}
+
+.responsive-calendar {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .responsive-calendar .rbc-header {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-calendar .rbc-header {
+    font-size: 12px;
+  }
+}

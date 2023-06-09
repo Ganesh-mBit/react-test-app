@@ -82,7 +82,6 @@ const Login: React.FC<LoginProps> = ({
     return customForm;
   }
 
-  console.log(error, Object.keys(errors), !Object.keys(errors).length);
   return (
     <Box sx={{
       width: 1000,
@@ -124,7 +123,7 @@ const Login: React.FC<LoginProps> = ({
               helperText={errors[field.name]}
               required={field.required}
               fullWidth
-              autoComplete="off"
+              autoComplete="false"
             />
           </Box>
         ))}

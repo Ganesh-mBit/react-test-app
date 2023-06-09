@@ -36,8 +36,8 @@ const middleware = async (
   endpoint: string,
   method: any,
   extraHeaders: any,
-  payload: any,
-  isNotJSON: any,
+  payload?: any,
+  isNotJSON?: any,
   allowToken = true,
   useAccessToken = true
 ): Promise<any> => {

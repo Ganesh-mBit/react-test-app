@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ajaxCallsInProgress from './reducers/ajaxStatusReducer';
 import appReducer from './reducers/appReducer';
+import { rootRedcuer } from 'react-package-bt';
 
 const reducer = combineReducers({
   ajaxCallsInProgress,
-  app: appReducer
+  app: appReducer,
+  exState: rootRedcuer
 });
 
 const initialState = {};
