@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,14 +6,18 @@ import { Form, signup } from 'react-package-bt';
 import FormInputTextField from './common/FormInputTextField';
 import SelectField from './common/SelectField';
 import FormDateField from './common/FormDateField';
-import SearchLocation from './common/SearchLocation';
+// import SearchLocation from './common/SearchLocation';
 import { Checkbox, FormControlLabel, FormHelperText, Typography } from '@mui/material';
 import { GENDER_OPTIONS } from '../constants/AppVarConstant';
 import { useDispatch } from 'react-redux';
+import FormInputPhoneNumber from './common/FormInputPhoneNumber';
+import { USER_SIGNUP_URL } from '../redux/api/config';
 
 export const SignUpSchema = Yup.object().shape({
-  name: Yup.string()
-    .required('Full name is required.'),
+  firstName: Yup.string()
+    .required('First name is required.'),
+  lastName: Yup.string()
+    .required('Last name is required.'),
   email: Yup.string()
     .required('Email is required.')
     .email('Invalid email address.')
@@ -23,10 +27,13 @@ export const SignUpSchema = Yup.object().shape({
   date: Yup.date()
     .typeError('Date format should be MM/DD/YYYY.')
     .required('Birth Date is required.'),
-  phoneNumber: Yup.number()
-    .required('Phone Number is required.'),
-  location: Yup.string()
-    .required('Address is required.'),
+  phoneArray: Yup.array().of(
+    Yup.object().shape({
+      isoCode: Yup.string(),
+      phoneNumber: Yup.string()
+        .required('Phone Number is required.')
+    })
+  ),
   password: Yup.string()
     .required('Password is required.')
     .min(8, 'Password must be at least 8 characters.'),
@@ -39,14 +46,21 @@ export const SignUpSchema = Yup.object().shape({
 
 const SignupMain = (): JSX.Element => {
   const dispatch = useDispatch();
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const appendValues = {
+    phoneNumber: '',
+    isoCode: 'US',
+    dialCode: ''
+  };
 
   const defaultValues = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
-    gender: null,
+    gender: '',
     date: '',
-    location: '',
-    phoneNumber: undefined,
+    phoneArray: [appendValues],
     password: '',
     confirmPassword: '',
     tnc: false
@@ -63,13 +77,29 @@ const SignupMain = (): JSX.Element => {
     reValidateMode: 'onChange'
   });
 
-  const getPlaceId = (locationId: string, location: any): void => {
-    setValue('location', location?.description);
+  // const getPlaceId = (locationId: string, location: any): void => {
+  //   setValue('location', location?.description);
+  // };
+
+  const onSuccess = (data: any): void => {
+    alert(data.message);
+  };
+
+  const onError = (err: any): void => {
+    setErrorMsg('');
   };
 
   const onSubmit = (data: any): void => {
     if (data) {
-      dispatch(signup('https://api.gamestoppedout.com/auth/v1.0/signup', data, () => { alert('Signup successful'); }, () => { alert('Opps Something went wrong!'); }));
+      const payload = {
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        email: data?.email,
+        password: data?.password,
+        phone: data?.phoneArray?.[0]?.phoneNumber ? `${data?.phoneArray?.[0]?.dialCode as string}${data?.phoneArray?.[0]?.phoneNumber as string}` : '',
+        isoCode: data?.phoneArray?.[0]?.phoneNumber ? data?.phoneArray?.[0].isoCode : ''
+      };
+      dispatch(signup(USER_SIGNUP_URL, payload, onSuccess, onError));
     }
   };
 
@@ -80,14 +110,24 @@ const SignupMain = (): JSX.Element => {
       formSx={{ width: { xs: '90%', md: '70%' }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
       fields={[
         {
-          label: 'Name',
+          label: 'First Name',
           type: 'component',
-          component: <FormInputTextField width="100%" name='name' control={control} errorMessage={errors.name?.message} placeholder='Enter Name' />
+          component: <FormInputTextField width="100%" name='firstName' control={control} errorMessage={errors.firstName?.message} placeholder='Enter Name' />
+        },
+        {
+          label: 'Last Name',
+          type: 'component',
+          component: <FormInputTextField width="100%" name='lastName' control={control} errorMessage={errors.lastName?.message} placeholder='Enter Name' />
         },
         {
           label: 'Email',
           type: 'component',
           component: <FormInputTextField width="100%" name='email' control={control} errorMessage={errors.email?.message} placeholder='Enter Email' />
+        },
+        {
+          label: 'Phone Number',
+          type: 'component',
+          component: <FormInputPhoneNumber width="100%" name="phoneArray" control={control} setValue={setValue} countries={['us', 'ca', 'au', 'in', 'fr', 'gb']} maxLen={10} />
         },
         {
           label: 'Gender',
@@ -99,31 +139,26 @@ const SignupMain = (): JSX.Element => {
           type: 'component',
           component: <FormDateField width="100%" name='date' control={control} />
         },
-        {
-          label: 'Phone Number',
-          type: 'component',
-          component: <FormInputTextField width="100%" name='phoneNumber' control={control} type='number' placeholder='Enter Phone Number' />
-        },
-        {
-          label: 'Address',
-          type: 'component',
-          component: (
-            <Controller
-              name='location'
-              control={control}
-              render={({ field }) => (
-                <SearchLocation
-                  width="100%"
-                  field={field}
-                  getPlaceId={getPlaceId}
-                  validationError={!!errors?.location}
-                  helperText={errors.location?.message}
-                  placeHolder='Enter Address'
-                />
-              )}
-            />
-          )
-        },
+        // {
+        //   label: 'Address',
+        //   type: 'component',
+        //   component: (
+        //     <Controller
+        //       name='location'
+        //       control={control}
+        //       render={({ field }) => (
+        //         <SearchLocation
+        //           width="100%"
+        //           field={field}
+        //           getPlaceId={getPlaceId}
+        //           validationError={!!errors?.location}
+        //           helperText={errors.location?.message}
+        //           placeHolder='Enter Address'
+        //         />
+        //       )}
+        //     />
+        //   )
+        // },
         {
           label: 'Password',
           type: 'component',
@@ -162,6 +197,7 @@ const SignupMain = (): JSX.Element => {
           )
         }
       ]}
+      error={errorMsg}
       showSocialLogin={false}
       handleSubmit={handleSubmit}
       socialProviders={['facebook', 'google', 'twitter']}
