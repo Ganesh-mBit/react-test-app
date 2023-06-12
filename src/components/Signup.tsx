@@ -2,7 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Signup, signup } from 'react-package-bt';
+import { Form, signup } from 'react-package-bt';
 import FormInputTextField from './common/FormInputTextField';
 import SelectField from './common/SelectField';
 import FormDateField from './common/FormDateField';
@@ -74,7 +74,7 @@ const SignupMain = (): JSX.Element => {
   };
 
   return (
-    <Signup
+    <Form
       title='Sign Up'
       logoUrl='https://images.pexels.com/photos/2835170/pexels-photo-2835170.jpeg?auto=compress&cs=tinysrgb&w=180&h=250&dpr=2'
       formSx={{ width: { xs: '90%', md: '70%' }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
@@ -167,6 +167,7 @@ const SignupMain = (): JSX.Element => {
       socialProviders={['facebook', 'google', 'twitter']}
       onSocialLogin={() => { console.log('Social Login'); }}
       buttonLabel='Sign Up'
+      buttonXS={{ width: { xs: '100%', md: '50%' }, p: 1, fontSixe: '24px', fontWeight: 'bold', color: 'secondary' }}
       onSubmit={onSubmit}
     />
   );
