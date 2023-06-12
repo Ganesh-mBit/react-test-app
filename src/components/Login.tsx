@@ -7,9 +7,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormInputTextField from './common/FormInputTextField';
 // import { Form } from '../components/LoginForm';
 import { Box, Button, Typography } from '@mui/material';
+import { USER_LOGIN_URL } from '../redux/api/config';
 
 export const LoginSchema = Yup.object().shape({
-  email: Yup.string()
+  username: Yup.string()
     .required('Email is required.')
     .email('Invalid email address.')
     .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\\.]+$/, 'Invalid email address.'),
@@ -23,7 +24,7 @@ const LoginMain = (): JSX.Element => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const defaultValues = {
-    email: '',
+    username: '',
     password: ''
   };
 
@@ -37,13 +38,17 @@ const LoginMain = (): JSX.Element => {
     reValidateMode: 'onChange'
   });
 
+  const onSuccess = (res: any): void => {
+    alert(res?.message);
+  };
+
   const onError = (error: any): void => {
     setErrorMsg(error?.errorMsg);
   };
 
   const onSubmit = (data: any): void => {
     if (data) {
-      dispatch(login('https://api.gamestoppedout.com/auth/v1.0/login', data, () => { alert('Signup successful'); }, onError));
+      dispatch(login(USER_LOGIN_URL, data, onSuccess, onError));
     }
   };
 
@@ -58,7 +63,7 @@ const LoginMain = (): JSX.Element => {
           label: 'Email',
           sxField: { grid: { xs: 12, md: 12 } },
           type: 'component',
-          component: <FormInputTextField width="100%" name='email' control={control} errorMessage={errors.email?.message} placeholder='Enter Email' />
+          component: <FormInputTextField width="100%" name='username' control={control} errorMessage={errors.username?.message} placeholder='Enter Email' />
         },
         {
           label: 'Password',
