@@ -8,6 +8,8 @@ import FormInputTextField from './common/FormInputTextField';
 // import { Form } from '../components/LoginForm';
 import { Box, Button, Typography } from '@mui/material';
 import { USER_LOGIN_URL } from '../redux/api/config';
+import { useNavigate } from 'react-router-dom';
+import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions';
 
 export const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -21,6 +23,7 @@ export const LoginSchema = Yup.object().shape({
 
 const LoginMain = (): JSX.Element => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
 
   const defaultValues = {
@@ -39,11 +42,13 @@ const LoginMain = (): JSX.Element => {
   });
 
   const onSuccess = (res: any): void => {
-    alert(res?.message);
+    dispatch(setSuccessMessage(res?.message));
+    navigate('/');
   };
 
   const onError = (error: any): void => {
     setErrorMsg(error?.errorMsg);
+    dispatch(setErrorMessage(error?.errorMsg));
   };
 
   const onSubmit = (data: any): void => {
@@ -76,15 +81,15 @@ const LoginMain = (): JSX.Element => {
       showForgotPassword={true}
       socialProviders={['facebook', 'google', 'twitter']}
       onSocialLogin={() => { console.log('Social Login'); }}
-      onForgotPassword={() => { console.log('Forgot Password'); }}
+      onForgotPassword={() => { navigate('/forgot-password'); }}
       buttonLabel='Log In'
-      buttonXS={{ width: '100%', p: 1, fontSixe: '24px', fontWeight: 'bold', color: 'secondary' }}
+      buttonXS={{ width: '100%', fontSixe: '24px', fontWeight: 'bold', fill: 'secondary' }}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
       slotProps={(
         <Box sx={{ textAlign: 'center', marginTop: 2 }}>
           <Typography variant="body1">Don&apos;t have an account?</Typography>
-          <Button color="primary">
+          <Button onClick={() => { navigate('/signup'); }} color="primary">
             Create an Account
           </Button>
         </Box>
