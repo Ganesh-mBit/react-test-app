@@ -8,8 +8,8 @@ import FormInputTextField from './common/FormInputTextField';
 import { USER_LOGIN_URL } from '../redux/api/config';
 import { Box, Divider, Typography } from '@mui/material';
 import { BODY1 } from './common/Typography';
-import OTPInput from 'react-otp-input';
 import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions';
+import OTPInputField from './common/OTPInputField';
 
 export const ForgotPasswordSchema = Yup.object().shape({
   password: Yup.string()
@@ -39,10 +39,6 @@ const ResetPassword = (): JSX.Element => {
     resolver: yupResolver(ForgotPasswordSchema),
     reValidateMode: 'onChange'
   });
-
-  const handleChangeOtp = (value: string): void => {
-    setCurrentOtp(value);
-  };
 
   const onSuccess = (res: any): void => {
     dispatch(setSuccessMessage(res?.message));
@@ -86,16 +82,8 @@ const ResetPassword = (): JSX.Element => {
             <>
               <Divider />
               <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
-                <BODY1>Enter Verification Code</BODY1>
-                <OTPInput
-                  value={currentOtp}
-                  inputStyle={{
-                    width: '3rem', height: '3rem', marginRight: '1rem', borderRadius: '4px', border: '1px solid #e8e8ed'
-                  }}
-                  onChange={handleChangeOtp}
-                  numInputs={4}
-                  renderInput={(props) => <input {...props} />}
-                />
+                <BODY1 color="gray">Enter Verification Code</BODY1>
+                <OTPInputField value={currentOtp} setValue={setCurrentOtp} />
               </Box>
               <Divider />
             </>
