@@ -15,8 +15,8 @@ const Routes = (): any => {
     { path: '/calender', element: <Calender />, children: [] },
     { path: '/signup', element: <Signup />, children: [] },
     { path: '/login', element: <Login />, children: [] },
-    { path: '/forgot-password', element: <ForgotPassword />, children: [] },
-    { path: '/reset-password', element: <ResetPassword />, children: [] },
+    { path: '/password', element: <ForgotPassword />, children: [] },
+    { path: '/password/reset', element: <ResetPassword />, children: [] },
     { path: '*', element: <NotFound /> }
   ]);
 

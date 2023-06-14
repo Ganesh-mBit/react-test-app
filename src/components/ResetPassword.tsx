@@ -12,6 +12,8 @@ import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions'
 import OTPInputField from './common/OTPInputField';
 
 export const ForgotPasswordSchema = Yup.object().shape({
+  currentOTP: Yup.string()
+    .required('Verification Code is required.'),
   password: Yup.string()
     .required('Password is required.')
     .min(8, 'Password must be at least 8 characters.'),
@@ -24,15 +26,16 @@ export const ForgotPasswordSchema = Yup.object().shape({
 const ResetPassword = (): JSX.Element => {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState('');
-  const [currentOtp, setCurrentOtp] = useState('');
 
   const defaultValues = {
+    currentOTP: '',
     password: '',
     confirmPassword: ''
   };
 
   const {
     handleSubmit,
+    formState: { errors },
     control
   } = useForm({
     defaultValues,
@@ -83,7 +86,7 @@ const ResetPassword = (): JSX.Element => {
               <Divider />
               <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
                 <BODY1 color="gray">Enter Verification Code</BODY1>
-                <OTPInputField value={currentOtp} setValue={setCurrentOtp} />
+                <OTPInputField name='currentOTP' control={control} error={errors.currentOTP?.message ?? ''} />
               </Box>
               <Divider />
             </>

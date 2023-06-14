@@ -81,7 +81,7 @@ const LoginMain = (): JSX.Element => {
       showForgotPassword={true}
       socialProviders={['facebook', 'google', 'twitter']}
       onSocialLogin={() => { console.log('Social Login'); }}
-      onForgotPassword={() => { navigate('/forgot-password'); }}
+      onForgotPassword={() => { navigate('/password'); }}
       buttonLabel='Log In'
       buttonXS={{ width: '100%', fontSixe: '24px', fontWeight: 'bold', fill: 'secondary' }}
       handleSubmit={handleSubmit}
