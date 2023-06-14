@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Snackbar, Alert } from '@mui/material';
-import { setErrorMessage } from '../../redux/actions/appActions';
+import { setErrorMessage, setSuccessMessage } from '../../redux/actions/appActions';
 
 const CustomSnackbar = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -11,28 +11,27 @@ const CustomSnackbar = (): JSX.Element => {
     if (errorMessage) {
       dispatch(setErrorMessage(''));
     } else {
-      dispatch(setErrorMessage(''));
+      dispatch(setSuccessMessage(''));
     }
   };
 
-  return (
-    <div>
-      <Snackbar open={!!errorMessage || !!successMessage} autoHideDuration={5000} onClose={handleClose}>
-        <>
-          {errorMessage
-            ? (
-              <Alert variant='filled' onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                {errorMessage}
-              </Alert>)
-            : successMessage && (
-              <Alert variant='filled' onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                {successMessage}
-              </Alert>
-            )}
-        </>
+  if (successMessage) {
+    return (
+      <Snackbar open={!!successMessage} autoHideDuration={5000} onClose={handleClose}>
+        <Alert variant='filled' onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
       </Snackbar>
-    </div>
-  );
+    );
+  } else if (errorMessage) {
+    return (
+      <Snackbar open={!!errorMessage} autoHideDuration={5000} onClose={handleClose}>
+        <Alert variant='filled' onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    );
+  } else return <></>;
 };
 
 export default CustomSnackbar;

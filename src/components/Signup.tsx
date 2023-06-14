@@ -7,11 +7,13 @@ import FormInputTextField from './common/FormInputTextField';
 import SelectField from './common/SelectField';
 import FormDateField from './common/FormDateField';
 // import SearchLocation from './common/SearchLocation';
-import { Checkbox, FormControlLabel, FormHelperText, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, FormHelperText, Typography } from '@mui/material';
 import { GENDER_OPTIONS } from '../constants/AppVarConstant';
 import { useDispatch } from 'react-redux';
 import FormInputPhoneNumber from './common/FormInputPhoneNumber';
 import { USER_SIGNUP_URL } from '../redux/api/config';
+import { useNavigate } from 'react-router-dom';
+import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions';
 
 export const SignUpSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -46,6 +48,7 @@ export const SignUpSchema = Yup.object().shape({
 
 const SignupMain = (): JSX.Element => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
 
   const appendValues = {
@@ -81,12 +84,14 @@ const SignupMain = (): JSX.Element => {
   //   setValue('location', location?.description);
   // };
 
-  const onSuccess = (data: any): void => {
-    alert(data.message);
+  const onSuccess = (res: any): void => {
+    dispatch(setSuccessMessage(res?.message));
+    navigate('/');
   };
 
   const onError = (err: any): void => {
-    setErrorMsg('');
+    setErrorMsg(err?.errorMsg);
+    dispatch(setErrorMessage(err?.errorMsg));
   };
 
   const onSubmit = (data: any): void => {
@@ -107,7 +112,7 @@ const SignupMain = (): JSX.Element => {
     <Form
       title='Sign Up'
       logoUrl='https://images.pexels.com/photos/2835170/pexels-photo-2835170.jpeg?auto=compress&cs=tinysrgb&w=180&h=250&dpr=2'
-      formSx={{ width: { xs: '90%', md: '70%' }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
+      formSx={{ width: { xs: '90%', md: '70%' }, gap: 4 }}
       fields={[
         {
           label: 'First Name',
@@ -203,8 +208,16 @@ const SignupMain = (): JSX.Element => {
       socialProviders={['facebook', 'google', 'twitter']}
       onSocialLogin={() => { console.log('Social Login'); }}
       buttonLabel='Sign Up'
-      buttonXS={{ width: { xs: '100%', md: '50%' }, p: 1, fontSixe: '24px', fontWeight: 'bold', color: 'secondary' }}
+      buttonXS={{ width: { xs: '100%', md: '50%' }, fontSixe: '24px', fontWeight: 'bold', fill: 'secondary' }}
       onSubmit={onSubmit}
+      slotProps={(
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 4 }}>
+          <Typography variant="body2" color="GrayText">Already have an account</Typography>
+          <Button onClick={() => { navigate('/login'); }} color="primary">
+            Log In
+          </Button>
+        </Box>
+      )}
     />
   );
 };
