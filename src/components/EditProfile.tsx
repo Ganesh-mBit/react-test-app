@@ -130,7 +130,7 @@ const EditProfile = (): JSX.Element => {
       setValue('email', user?.email);
       setValue('phoneArray', [appendValues]);
       setValue('gender', user?.gender);
-      setValue('date', dayjs(user?.birthdate));
+      setValue('date', dayjs(new Date(user?.birthdate)));
     }
   }, [user]);
 
