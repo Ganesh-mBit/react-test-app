@@ -12,7 +12,7 @@ const Home = (): JSX.Element => {
   const { user } = useSelector((state: any) => state.app);
 
   const onSuccess = (res: any): void => {
-    dispatch(setUser(res));
+    dispatch(setUser(res.result));
   };
 
   const onError = (error: any): void => {
