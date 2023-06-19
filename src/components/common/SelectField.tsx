@@ -82,7 +82,7 @@ const SelectField: React.FC<SelectFieldProps> = (props): JSX.Element => {
               {options.map((item: { key: string, value: string }) => (
                 <MenuItem
                   key={item.key}
-                  value={item.value}
+                  value={item.key}
                   style={getStyles(optionsSX)}
                   disabled={disableKeys.includes(item.key)}
                 >

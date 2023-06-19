@@ -7,6 +7,7 @@ const Signup = React.lazy(async () => await import('../components/Signup'));
 const Login = React.lazy(async () => await import('../components/Login'));
 const ForgotPassword = React.lazy(async () => await import('../components/ForgotPassword'));
 const ResetPassword = React.lazy(async () => await import('../components/ResetPassword'));
+const EditProfile = React.lazy(async () => await import('../components/EditProfile'));
 const NotFound = React.lazy(async () => await import('../components/NotFound'));
 
 const Routes = (): any => {
@@ -17,6 +18,7 @@ const Routes = (): any => {
     { path: '/login', element: <Login />, children: [] },
     { path: '/password', element: <ForgotPassword />, children: [] },
     { path: '/password/reset', element: <ResetPassword />, children: [] },
+    { path: '/user/profile', element: <EditProfile />, children: [] },
     { path: '*', element: <NotFound /> }
   ]);
 

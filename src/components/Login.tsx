@@ -43,15 +43,20 @@ const LoginMain = (): JSX.Element => {
 
   const onSuccess = (res: any): void => {
     dispatch(setSuccessMessage(res?.message));
+    const { accessToken, refreshToken } = res?.result;
+    localStorage.setItem('jwt_access_token', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
     navigate('/');
   };
 
   const onError = (error: any): void => {
     setErrorMsg(error?.errorMsg);
-    dispatch(setErrorMessage(error?.errorMsg));
+    dispatch(setErrorMessage(error?.message));
   };
 
   const onSubmit = (data: any): void => {
+    localStorage.removeItem('jwt_access_token');
+    localStorage.removeItem('refreshToken');
     if (data) {
       dispatch(login(USER_LOGIN_URL, data, onSuccess, onError));
     }
