@@ -113,7 +113,7 @@ const EditProfile = (): JSX.Element => {
   });
 
   const onProfileSuccess = (res: any): void => {
-    dispatch(setUser(res));
+    dispatch(setUser(res.result));
   };
 
   const onProfleError = (err: any): void => {
