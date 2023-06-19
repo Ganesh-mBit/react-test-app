@@ -54,7 +54,7 @@ const SignupMain = (): JSX.Element => {
   const appendValues = {
     phoneNumber: '',
     isoCode: 'US',
-    dialCode: ''
+    dialCode: '+1'
   };
 
   const defaultValues = {
@@ -91,7 +91,7 @@ const SignupMain = (): JSX.Element => {
 
   const onError = (err: any): void => {
     setErrorMsg(err?.errorMsg);
-    dispatch(setErrorMessage(err?.errorMsg));
+    dispatch(setErrorMessage(err?.message));
   };
 
   const onSubmit = (data: any): void => {

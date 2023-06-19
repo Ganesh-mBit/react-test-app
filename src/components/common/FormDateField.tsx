@@ -42,13 +42,14 @@ const FormDateField: React.FC<FormDateFieldProps> = (props): JSX.Element => {
         name={name}
         control={control}
         render={({
-          field: { onChange },
+          field: { onChange, value },
           fieldState: { error }
         }) => (
           <FormControl sx={{ width: { width } }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 open={popperState}
+                value={value}
                 onOpen={() => {
                   if (!disabled) {
                     setPopperState(true);
