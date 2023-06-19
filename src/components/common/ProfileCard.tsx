@@ -4,7 +4,12 @@ import { BODY1, H3 } from './Typography';
 import ProfilePicture from './ProfilePicture';
 import { FaUserCircle } from 'react-icons/fa';
 
-const ProfileCard = (): JSX.Element => {
+interface ProfileCardProps {
+  data: Record<string, any>
+};
+
+const ProfileCard: React.FC<ProfileCardProps> = ({ data }): JSX.Element => {
+  const { firstName, lastName, email, phone } = data;
   return (
     <Paper
       sx={{
@@ -45,13 +50,13 @@ const ProfileCard = (): JSX.Element => {
                 <Grid item xs={12} md={8}>
                   <Box display="flex" flexDirection="column" gap={1} justifyContent="center" p={1}>
                     <Box>
-                      <H3 sx={{ overflowWrap: 'anywhere', lineHeight: 'unset' }} color="white" align="left">Joe Doe</H3>
+                      <H3 sx={{ overflowWrap: 'anywhere', lineHeight: 'unset' }} color="white" align="left">{firstName ?? 'Joe'}&nbsp;{lastName ?? 'Doe'}</H3>
                     </Box>
                     <Box display="flex" flexDirection="row" gap={1} alignItems="center">
-                      <BODY1 noWrap color="white" align="left">joedoe@gmail.com</BODY1>
+                      <BODY1 noWrap color="white" align="left">{email ?? ''}</BODY1>
                     </Box>
                     <Box display="flex" flexDirection="row" gap={1} alignItems="center">
-                      <BODY1 noWrap color="white" align="left">+1213466878</BODY1>
+                      <BODY1 noWrap color="white" align="left">{phone ?? ''}</BODY1>
                     </Box>
                   </Box>
                 </Grid>
