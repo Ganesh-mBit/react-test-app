@@ -130,7 +130,7 @@ const EditProfile = (): JSX.Element => {
       setValue('email', user?.email);
       setValue('phoneArray', [appendValues]);
       setValue('gender', user?.gender);
-      setValue('date', dayjs(user?.birthdate));
+      setValue('date', dayjs(new Date(user?.birthdate)));
     }
   }, [user]);
 
@@ -173,7 +173,7 @@ const EditProfile = (): JSX.Element => {
   return (
     <Box sx={{ width: '100%', py: 2, display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
       <Box sx={{ width: { xs: '100%', md: '75%' }, p: 5 }}>
-        <ProfileCard />
+        <ProfileCard data={user} />
         <Tabs onChange={handleChange} value={tabValue} >
           <Tab value="profile" label="Profile" />
           <Tab value="security" label="Security" />

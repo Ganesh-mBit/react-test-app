@@ -86,7 +86,7 @@ const SignupMain = (): JSX.Element => {
 
   const onSuccess = (res: any): void => {
     dispatch(setSuccessMessage(res?.message));
-    navigate('/');
+    navigate('/login');
   };
 
   const onError = (err: any): void => {
