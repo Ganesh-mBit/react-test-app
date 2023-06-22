@@ -86,6 +86,7 @@ const FormInputTextField: React.FC<FormInputTextFieldProps> = (props): JSX.Eleme
         }) => (
           <FormControl sx={{ width: { width } }}>
             <TextField
+              id={name}
               variant="outlined"
               error={!!error || !!errorMessage}
               type={password && !showPassword ? 'password' : type ?? 'text'}
