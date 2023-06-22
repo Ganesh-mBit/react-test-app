@@ -17,9 +17,11 @@ import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions'
 
 export const SignUpSchema = Yup.object().shape({
   firstName: Yup.string()
-    .required('First name is required.'),
+    .required('First name is required.')
+    .matches(/^[A-Za-z ]+$/, 'No numbers or special characters are allowed.'),
   lastName: Yup.string()
-    .required('Last name is required.'),
+    .required('Last name is required.')
+    .matches(/^[A-Za-z ]+$/, 'No numbers or special characters are allowed.'),
   email: Yup.string()
     .required('Email is required.')
     .email('Invalid email address.')
@@ -95,12 +97,16 @@ const SignupMain = (): JSX.Element => {
   };
 
   const onSubmit = (data: any): void => {
+    localStorage.removeItem('jwt_access_token');
+    localStorage.removeItem('refreshToken');
     if (data) {
       const payload = {
         firstName: data?.firstName,
         lastName: data?.lastName,
         email: data?.email,
         password: data?.password,
+        gender: data?.gender,
+        birthdate: data?.date,
         phone: data?.phoneArray?.[0]?.phoneNumber ? `${data?.phoneArray?.[0]?.dialCode as string}${data?.phoneArray?.[0]?.phoneNumber as string}` : '',
         isoCode: data?.phoneArray?.[0]?.phoneNumber ? data?.phoneArray?.[0].isoCode : ''
       };
@@ -142,7 +148,7 @@ const SignupMain = (): JSX.Element => {
         {
           label: 'Date Of Birth',
           type: 'component',
-          component: <FormDateField width="100%" name='date' control={control} />
+          component: <FormDateField width="100%" name='date' control={control} disableFuture />
         },
         // {
         //   label: 'Address',

@@ -2,7 +2,7 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 
 const Home = React.lazy(async () => await import('../components/Home'));
-const Calender = React.lazy(async () => await import('../components/Calender/Calender'));
+const Calender = React.lazy(async () => await import('../components/Calender/CustomCalender'));
 const Signup = React.lazy(async () => await import('../components/Signup'));
 const Login = React.lazy(async () => await import('../components/Login'));
 const ForgotPassword = React.lazy(async () => await import('../components/ForgotPassword'));
