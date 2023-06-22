@@ -15,6 +15,7 @@ interface FormDateFieldProps {
   maxDate?: any
   readOnly?: boolean
   disabled?: boolean
+  disableFuture?: boolean
 }
 
 const FormDateField: React.FC<FormDateFieldProps> = (props): JSX.Element => {
@@ -27,6 +28,7 @@ const FormDateField: React.FC<FormDateFieldProps> = (props): JSX.Element => {
     minDate,
     maxDate,
     readOnly,
+    disableFuture,
     disabled
   } = props;
 
@@ -62,6 +64,7 @@ const FormDateField: React.FC<FormDateFieldProps> = (props): JSX.Element => {
                     onChange(newValue);
                   }
                 }}
+                disableFuture={disableFuture}
                 disabled={disabled}
                 readOnly={readOnly}
                 maxDate={maxDate}
@@ -69,7 +72,12 @@ const FormDateField: React.FC<FormDateFieldProps> = (props): JSX.Element => {
                 slotProps={{
                   textField: {
                     helperText: error?.message,
-                    error: !!error?.message
+                    error: !!error?.message,
+                    onClick: () => {
+                      if (!disabled) {
+                        setPopperState(true);
+                      }
+                    }
                   }
                 }}
               />

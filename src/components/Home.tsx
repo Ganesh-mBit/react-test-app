@@ -30,6 +30,7 @@ const Home = (): JSX.Element => {
       <Box sx={{ display: 'flex', gap: 5, px: 3 }}>
         <Link to="/login">Login</Link>
         <Link to="/signup">Sign Up</Link>
+        <Link to="/calender">Calender</Link>
         {!isEmpty(user) && <Link to="/user/profile">Edit Profile</Link>}
       </Box>
     </div>
