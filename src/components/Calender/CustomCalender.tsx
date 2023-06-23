@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import moment from 'moment';
-import { Calendar, momentLocalizer, type View, type SlotInfo } from 'react-big-calendar';
+import { Calendar, momentLocalizer, type SlotInfo } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Modal from './Modal';
-import { LocalizationProvider, MobileTimePicker } from '@mui/x-date-pickers';
+import { DesktopDateTimePicker, LocalizationProvider, MobileTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import CustomToolbar from './Toolbar';
@@ -19,6 +19,107 @@ interface EventDetails {
   color: string
 }
 
+const dumyEvents = [
+  {
+    title: 'Daily Scrum Updates',
+    desc: 'Team call',
+    start: new Date('Fri Jun 23 2023 10:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 23 2023 10:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'BinaryTouch Remote Rapport Rally',
+    desc: 'Optional Fun call',
+    start: new Date('Fri Jun 23 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 23 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Prototype Update',
+    desc: 'Web & Mobile',
+    start: new Date('Fri Jun 23 2023 16:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 23 2023 16:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Discussion on Material UI',
+    desc: 'Web & Mobile',
+    start: new Date('Fri Jun 23 2023 18:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 23 2023 18:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Feature Walkthrough Call',
+    desc: 'New Feature Related',
+    start: new Date('Fri Jun 23 2023 15:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 23 2023 15:45:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Daily Scrum Updates',
+    desc: 'Team call',
+    start: new Date('Fri Jun 26 2023 10:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 26 2023 10:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'BinaryTouch Remote Rapport Rally',
+    desc: 'Optional Fun call',
+    start: new Date('Fri Jun 26 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 26 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Prototype Update',
+    desc: 'Web & Mobile',
+    start: new Date('Fri Jun 26 2023 16:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 26 2023 16:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Daily Scrum Updates',
+    desc: 'Team call',
+    start: new Date('Fri Jun 21 2023 10:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 21 2023 10:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'BinaryTouch Remote Rapport Rally',
+    desc: 'Optional Fun call',
+    start: new Date('Fri Jun 21 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 21 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Prototype Update',
+    desc: 'Web & Mobile',
+    start: new Date('Fri Jun 21 2023 16:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 21 2023 16:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Daily Scrum Updates',
+    desc: 'Team call',
+    start: new Date('Fri Jun 29 2023 10:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 29 2023 10:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'BinaryTouch Remote Rapport Rally',
+    desc: 'Optional Fun call',
+    start: new Date('Fri Jun 29 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 29 2023 17:00:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  },
+  {
+    title: 'Prototype Update',
+    desc: 'Web & Mobile',
+    start: new Date('Fri Jun 29 2023 16:00:00 GMT+0530 (India Standard Time)'),
+    end: new Date('Fri Jun 29 2023 16:30:00 GMT+0530 (India Standard Time)'),
+    color: '#001762'
+  }
+];
+
 const CustomCalender = (): JSX.Element => {
   const defaultEventValues = {
     title: '',
@@ -29,13 +130,12 @@ const CustomCalender = (): JSX.Element => {
   };
 
   const [openSlot, setOpenSlot] = useState(false);
-  const [calendarView, setCalendarView] = useState<View | undefined>('month');
+  const [selectDate, setSelectDate] = useState(false);
   const [errors, setErrors] = useState(false);
   const [openEvent, setOpenEvent] = useState(false);
   const [eventDetails, setEventDetails] = useState<EventDetails>(defaultEventValues);
   const [clickedEvent, setClickedEvent] = useState<EventDetails>(defaultEventValues);
-  const [events, setEvents] = useState<EventDetails[] | any[]>([]);
-  const [date, setDate] = useState(new Date());
+  const [events, setEvents] = useState<EventDetails[] | any[]>(dumyEvents);
 
   const hanleClose = (): void => {
     if (openSlot) {
@@ -43,15 +143,19 @@ const CustomCalender = (): JSX.Element => {
     } else {
       setOpenEvent(false);
     }
+    setSelectDate(false);
     setEventDetails(defaultEventValues);
   };
 
   const handleSlotSelected = (slotIfo: SlotInfo): void => {
+    if (!slotIfo?.slots) {
+      setSelectDate(true);
+    }
     setEventDetails((prev) => {
       return {
         ...prev,
-        start: slotIfo.start,
-        end: slotIfo.start
+        start: slotIfo.start ?? new Date().toString(),
+        end: slotIfo.start ?? new Date().toString()
       };
     });
     setOpenSlot(true);
@@ -88,17 +192,6 @@ const CustomCalender = (): JSX.Element => {
     });
   };
 
-  const handleNavigate = (action: string): void => {
-    const month = date.getMonth();
-    if (action === 'PREV') {
-      const newDate = date.setMonth(month - 1);
-      setDate(new Date(newDate));
-    } else {
-      const newDate = date.setMonth(month + 1);
-      setDate(new Date(newDate));
-    }
-  };
-
   const createEvent = (): void => {
     const { title, desc } = eventDetails;
     const updateEvents = [...events];
@@ -114,6 +207,7 @@ const CustomCalender = (): JSX.Element => {
       hanleClose();
       setEventDetails(defaultEventValues);
       setErrors(false);
+      setSelectDate(false);
     } else {
       setErrors(true);
     }
@@ -161,20 +255,20 @@ const CustomCalender = (): JSX.Element => {
     };
   };
 
+  console.log(events);
+  console.log(events?.[0]?.start.toString());
+
   return (
     <Box sx={{ px: { xs: 1, md: 8 }, py: 4 }}>
       <Box sx={{ height: '85vh', overflow: 'auto' }}>
         <Calendar
+          popup
           localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
           views={['month', 'week', 'agenda']}
-          view={calendarView}
-          onView={(view) => { setCalendarView(view); }}
           selectable
-          date={date}
-          onNavigate={(date) => { console.log(date); }}
           onSelectSlot={handleSlotSelected}
           onSelectEvent={handleEvents}
           eventPropGetter={eventStyleGetter}
@@ -182,11 +276,8 @@ const CustomCalender = (): JSX.Element => {
           components={{
             toolbar: (props) => (
               <CustomToolbar
+                selectSlot={handleSlotSelected}
                 {...props}
-                date={date}
-                view={calendarView ?? ''}
-                onView={setCalendarView}
-                onNavigate={handleNavigate}
               />
             )
           }}
@@ -216,8 +307,18 @@ const CustomCalender = (): JSX.Element => {
             helperText={errors && !eventDetails.desc ? 'Field is required.' : ''}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileTimePicker label="Start Time" value={dayjs(eventDetails?.start)} onChange={(value) => { handleTimeChange(value, 'start'); }} />
-            <MobileTimePicker label="End Time" value={dayjs(eventDetails?.end)} onChange={(value) => { handleTimeChange(value, 'end'); }} />
+            {selectDate
+              ? (
+                <>
+                  <DesktopDateTimePicker label="Start Date" value={dayjs(eventDetails?.start)} onChange={(value) => { handleTimeChange(value, 'start'); }} />
+                  <DesktopDateTimePicker label="End Date" value={dayjs(eventDetails?.end)} onChange={(value) => { handleTimeChange(value, 'end'); }} />
+                </>)
+              : (
+                <>
+                  <MobileTimePicker label="Start Time" value={dayjs(eventDetails?.start)} onChange={(value) => { handleTimeChange(value, 'start'); }} />
+                  <MobileTimePicker label="End Time" value={dayjs(eventDetails?.end)} onChange={(value) => { handleTimeChange(value, 'end'); }} />
+                </>)
+            }
           </LocalizationProvider>
         </Box>
       </Modal>
