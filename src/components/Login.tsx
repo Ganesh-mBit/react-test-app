@@ -14,7 +14,7 @@ import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions'
 export const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .required('Email is required.')
-    .email('Invalid email address.')
+    .email('Enter Valid Email')
     .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\\.]+$/, 'Invalid email address.'),
   password: Yup.string()
     .required('Password is required.')
@@ -64,7 +64,7 @@ const LoginMain = (): JSX.Element => {
 
   return (
     <Form
-      title='Log In'
+      title='Welcome Back'
       logoUrl='https://images.pexels.com/photos/2835170/pexels-photo-2835170.jpeg?auto=compress&cs=tinysrgb&w=180&h=250&dpr=2'
       formSx={{ width: { xs: '90%', md: '30%' }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
       error={errorMsg}

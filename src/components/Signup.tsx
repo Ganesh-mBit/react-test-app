@@ -29,8 +29,8 @@ export const SignUpSchema = Yup.object().shape({
   gender: Yup.string()
     .required('Gender is required.'),
   date: Yup.date()
-    .typeError('Date format should be MM/DD/YYYY.')
-    .required('Birth Date is required.'),
+    .required('Birth Date is required.')
+    .typeError('Date format should be MM/DD/YYYY.'),
   phoneArray: Yup.array().of(
     Yup.object().shape({
       isoCode: Yup.string(),
@@ -42,7 +42,7 @@ export const SignUpSchema = Yup.object().shape({
     .required('Password is required.')
     .min(8, 'Password must be at least 8 characters.'),
   confirmPassword: Yup.string()
-    .required('Password is required.')
+    .required('Confirm Password is required.')
     .min(8, 'Password must be at least 8 characters.')
     .oneOf([Yup.ref('password')], 'Password did not match.'),
   tnc: Yup.bool().oneOf([true], 'Accept Terms is required.')
@@ -64,7 +64,7 @@ const SignupMain = (): JSX.Element => {
     lastName: '',
     email: '',
     gender: '',
-    date: '',
+    date: null,
     phoneArray: [appendValues],
     password: '',
     confirmPassword: '',
@@ -146,7 +146,7 @@ const SignupMain = (): JSX.Element => {
           component: <SelectField width="100%" name='gender' control={control} options={GENDER_OPTIONS} />
         },
         {
-          label: 'Date Of Birth',
+          label: 'Birth Date',
           type: 'component',
           component: <FormDateField width="100%" name='date' control={control} disableFuture />
         },
@@ -200,7 +200,7 @@ const SignupMain = (): JSX.Element => {
                   />
                 )}
                 label={(
-                  <Typography variant='body2' color="GrayText">I have read and agree with <b>Terms & Privacy Policy</b></Typography>
+                  <Typography variant='body2' color="GrayText">Agree with <b style={{ color: 'primary' }}>Terms & Condition</b></Typography>
                 )}
               />
               <FormHelperText error>{errors.tnc ? errors.tnc.message : ' '}</FormHelperText>
@@ -218,7 +218,7 @@ const SignupMain = (): JSX.Element => {
       onSubmit={onSubmit}
       slotProps={(
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 4 }}>
-          <Typography variant="body2" color="GrayText">Already have an account</Typography>
+          <Typography variant="body2" color="GrayText">Already have an account?</Typography>
           <Button onClick={() => { navigate('/login'); }} color="primary">
             Log In
           </Button>

@@ -12,7 +12,7 @@ import { setErrorMessage, setSuccessMessage } from '../redux/actions/appActions'
 export const ForgotPasswordSchema = Yup.object().shape({
   username: Yup.string()
     .required('Email is required.')
-    .email('Invalid email address.')
+    .email('Enter Valid Email')
     .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\\.]+$/, 'Invalid email address.')
 });
 
