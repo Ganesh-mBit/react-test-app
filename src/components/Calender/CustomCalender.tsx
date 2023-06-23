@@ -255,9 +255,6 @@ const CustomCalender = (): JSX.Element => {
     };
   };
 
-  console.log(events);
-  console.log(events?.[0]?.start.toString());
-
   return (
     <Box sx={{ px: { xs: 1, md: 8 }, py: 4 }}>
       <Box sx={{ height: '85vh', overflow: 'auto' }}>
