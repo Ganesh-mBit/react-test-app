@@ -38,9 +38,9 @@ const CustomToolbar: React.FC<CustomToolbarProps> = (props): JSX.Element => {
       </Box>
       <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', flex: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', flex: 2, gap: 1 }}>
-          <FaCaretLeft size={20} style={{ cursor: 'pointer', color: '#001762' }} onClick={() => { onNavigate('PREV'); }} />
+          <FaCaretLeft id='leftArrow' size={20} style={{ cursor: 'pointer', color: '#001762' }} onClick={() => { onNavigate('PREV'); }} />
           <Typography noWrap variant='body1'>{label}</Typography>
-          <FaCaretRight size={20} style={{ cursor: 'pointer', color: '#001762' }} onClick={() => { onNavigate('NEXT'); }} />
+          <FaCaretRight id='rightArrow' size={20} style={{ cursor: 'pointer', color: '#001762' }} onClick={() => { onNavigate('NEXT'); }} />
         </Box>
         <Box sx={{ minWidth: '130px' }}>
           <FormControl fullWidth>
