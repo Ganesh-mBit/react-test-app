@@ -13,7 +13,7 @@ const NotFound = React.lazy(async () => await import('../components/NotFound'));
 const Routes = (): any => {
   const routes = useRoutes([
     { path: '/', element: <Home />, children: [] },
-    { path: '/calender', element: <Calender />, children: [] },
+    { path: '/calendar', element: <Calender />, children: [] },
     { path: '/signup', element: <Signup />, children: [] },
     { path: '/login', element: <Login />, children: [] },
     { path: '/password', element: <ForgotPassword />, children: [] },

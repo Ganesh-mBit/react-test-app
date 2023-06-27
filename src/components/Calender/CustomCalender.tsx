@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import moment from 'moment';
 import { Calendar, momentLocalizer, type SlotInfo } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -8,6 +8,8 @@ import { DesktopDateTimePicker, LocalizationProvider, MobileTimePicker } from '@
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import CustomToolbar from './Toolbar';
+import ColorPicker from '../common/ColorPicker';
+import { COLOURS_OPTIONS } from '../../constants/AppVarConstant';
 
 const localizer = momentLocalizer(moment);
 
@@ -126,7 +128,7 @@ const CustomCalender = (): JSX.Element => {
     desc: '',
     start: '',
     end: '',
-    color: ''
+    color: '#001762'
   };
 
   const [openSlot, setOpenSlot] = useState(false);
@@ -135,7 +137,7 @@ const CustomCalender = (): JSX.Element => {
   const [openEvent, setOpenEvent] = useState(false);
   const [eventDetails, setEventDetails] = useState<EventDetails>(defaultEventValues);
   const [clickedEvent, setClickedEvent] = useState<EventDetails>(defaultEventValues);
-  const [events, setEvents] = useState<EventDetails[] | any[]>(dumyEvents);
+  const [events, setEvents] = useState<EventDetails[] | any[]>([...dumyEvents]);
 
   const hanleClose = (): void => {
     if (openSlot) {
@@ -144,6 +146,7 @@ const CustomCalender = (): JSX.Element => {
       setOpenEvent(false);
     }
     setSelectDate(false);
+    setErrors(false);
     setEventDetails(defaultEventValues);
   };
 
@@ -174,11 +177,11 @@ const CustomCalender = (): JSX.Element => {
     setOpenEvent(true);
   };
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string): void => {
+  const handleTextChange = (value: any, key: string): void => {
     setEventDetails((prev) => {
       return {
         ...prev,
-        [key]: e.target.value
+        [key]: value
       };
     });
   };
@@ -201,7 +204,7 @@ const CustomCalender = (): JSX.Element => {
         desc,
         start: eventDetails?.start?.$d ?? eventDetails?.start,
         end: eventDetails?.end?.$d ?? eventDetails?.end,
-        color: '#001762'
+        color: eventDetails.color
       });
       setEvents(updateEvents);
       hanleClose();
@@ -220,6 +223,7 @@ const CustomCalender = (): JSX.Element => {
     newEvents[index].desc = eventDetails.desc;
     newEvents[index].start = eventDetails?.start?.$d ?? eventDetails?.start;
     newEvents[index].end = eventDetails?.end?.$d ?? eventDetails?.end;
+    newEvents[index].color = eventDetails.color;
     setEvents(newEvents);
     hanleClose();
   };
@@ -291,17 +295,17 @@ const CustomCalender = (): JSX.Element => {
             fullWidth
             placeholder='Title'
             value={eventDetails.title}
-            onChange={(e) => { handleTextChange(e, 'title'); }}
+            onChange={(e) => { handleTextChange(e.target.value, 'title'); }}
             error={errors && !eventDetails.title}
-            helperText={errors && !eventDetails.title ? 'Field is required.' : ''}
+            helperText={errors && !eventDetails.title ? 'Title is required.' : ''}
           />
           <TextField
             fullWidth
             placeholder='Description'
             value={eventDetails.desc}
-            onChange={(e) => { handleTextChange(e, 'desc'); }}
+            onChange={(e) => { handleTextChange(e.target.value, 'desc'); }}
             error={errors && !eventDetails.desc}
-            helperText={errors && !eventDetails.desc ? 'Field is required.' : ''}
+            helperText={errors && !eventDetails.desc ? 'Description is required.' : ''}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             {selectDate
@@ -317,6 +321,10 @@ const CustomCalender = (): JSX.Element => {
                 </>)
             }
           </LocalizationProvider>
+          <Box>
+            <Typography variant='body1' color='secondary' fontWeight='bold'>Event Color</Typography>
+            <ColorPicker value={eventDetails.color} options={COLOURS_OPTIONS} onChange={(value) => { handleTextChange(value, 'color'); }} />
+          </Box>
         </Box>
       </Modal>
     </Box>
