@@ -219,13 +219,17 @@ const CustomCalender = (): JSX.Element => {
   const updateEvent = (): void => {
     const index = events.findIndex((event) => clickedEvent.title.match(event.title));
     const newEvents = events.slice();
-    newEvents[index].title = eventDetails.title;
-    newEvents[index].desc = eventDetails.desc;
-    newEvents[index].start = eventDetails?.start?.$d ?? eventDetails?.start;
-    newEvents[index].end = eventDetails?.end?.$d ?? eventDetails?.end;
-    newEvents[index].color = eventDetails.color;
-    setEvents(newEvents);
-    hanleClose();
+    if (eventDetails.title && eventDetails.desc) {
+      newEvents[index].title = eventDetails.title;
+      newEvents[index].desc = eventDetails.desc;
+      newEvents[index].start = eventDetails?.start?.$d ?? eventDetails?.start;
+      newEvents[index].end = eventDetails?.end?.$d ?? eventDetails?.end;
+      newEvents[index].color = eventDetails.color;
+      setEvents(newEvents);
+      hanleClose();
+    } else {
+      setErrors(true);
+    }
   };
 
   const deleteEvent = (): void => {
